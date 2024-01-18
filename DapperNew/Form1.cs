@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Dapper.Contrib.Extensions;
 using System;
 using System.Data.SqlClient;
 using System.Windows.Forms;
@@ -23,9 +24,14 @@ namespace DapperNew
             using (SqlConnection connection = new SqlConnection(connectionString))
             {
                 var liste =  connection.Query<Ogrenciler>("SELECT * FROM Ogrenciler");
+
+                //var liste2 = connection.GetAll<Ogrenciler>(); // buda çalışıyormuş sonradan gördüm 18.01.2024
+
                 gridControl1.DataSource = liste;
             }
         }
+
+       
        
         private void btnEkle_Click(object sender, EventArgs e)
         {
@@ -36,6 +42,8 @@ namespace DapperNew
             {
                 string query = "INSERT INTO Ogrenciler (ad, yas) VALUES (@ad, @yas)";
                 connection.Execute(query, ogrenci);
+
+                //connection.Insert(ogrenci); // buda çalışıyormuş sonradan gördüm 18.01.2024
                 //connection.ExecuteAsync(query, ogrenci); // hız için kullanılabilir
             }
             listele();
@@ -52,6 +60,8 @@ namespace DapperNew
             {
                 string query = "UPDATE Ogrenciler SET ad = @ad, yas = @yas WHERE id = @id";
                 connection.Execute(query, ogrenci);
+
+                //connection.Update(ogrenci); // buda çalışıyormuş sonradan gördüm 18.01.2024
             }
             listele();
         }
@@ -65,6 +75,8 @@ namespace DapperNew
             {
                 string query = "DELETE FROM Ogrenciler WHERE id = @id";
                 connection.Execute(query, new { id = ogrenci.id });
+
+                //connection.Delete(new Ogrenciler { id = ogrenci.id }); // // buda çalışıyormuş sonradan gördüm 18.01.2024
             }
 
             listele();
